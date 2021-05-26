@@ -207,7 +207,7 @@ if flag == 2:
 
         RTs[t-1] = t2 - t1  # 反応時間
         Intvls[t-1] = g_latencies[pos_g_latencies] # インターバル
-        Answer[t-1] = judge
+        Answer[t-1] = 1 if judge=='y' else 0
 
         t += 1
         pos_g_latencies += 1
@@ -285,7 +285,7 @@ if flag == 3:
 
         RTs[t-1] = t2 - t1  # 反応時間
         Intvls[t-1] = g_latencies[pos_g_latencies]
-        Answer[t-1] = judge
+        Answer[t-1] = 1 if judge=='y' else 0
 
         t += 1
         pos_g_latencies += 1
@@ -363,7 +363,7 @@ if flag == 4:
 
         RTs[t-1] = t2 - t1  # 反応時間
         Intvls[t-1] = g_latencies[pos_g_latencies]
-        Answer[t-1] = judge
+        Answer[t-1] = 1 if judge=='y' else 0
 
         t += 1
         pos_g_latencies += 1

@@ -20,13 +20,14 @@ myClock = core.Clock() # 時計の用意
 
 # 試行回数
 n_trials = 50
-RTs = numpy.empty(n_trials) # 反応時間
-Intvls = numpy.empty(n_trials) # インターバル
-Answer = numpy.empty(n_trials) # 正しい答え
-Precision = numpy.empty(n_trials) # あなたの解答(1:正解, 0:不正解)
+RTs = numpy.zeros(n_trials) # 反応時間
+Intvls = numpy.zeros(n_trials) # インターバル
+Answer = numpy.zeros(n_trials) # 正しい答え
+Judge = numpy.zeros(n_trials) # あなたの解答(1:正解, 0:不正解)
+Precision = numpy.zeros(n_trials) # 正解か否か
 message = visual.TextStim(myWin, text='', color='white') # 文字の書式
-information = visual.TextStim(myWin, text='', height=0.5, color='white') # 文字の書式
-information2 = visual.TextStim(myWin, text='', height=0.5, color='white') # 文字の書式
+information = visual.TextStim(myWin, text='', color='white') # 文字の書式
+information2 = visual.TextStim(myWin, text='', color='white') # 文字の書式
 
 # ディレイの調整
 latencies = []
@@ -116,7 +117,7 @@ if flag == 1:
         if flying == True:
             continue
 
-        f.print_text(myWin, 'A', information)
+        f.print_one(myWin, 'A', information)
         event.clearEvents()
 
         t1 = myClock.getTime()  # 刺激提示時刻
@@ -145,7 +146,7 @@ if flag == 1:
 
     # 反応時間の保存
     myWin.close()
-    f.save(RTs, Intvls)
+    f.save(RTs, Intvls, Judge, Answer, Precision, True)
     core.quit()
 
 
@@ -178,13 +179,13 @@ if flag == 2:
         
         if random.random() < 0.5: # 0.5未満なら正解のセットを表示
             moji = random.choice(chr_set2)
-            f.print_set(myWin, moji, moji, information, information2)
-            judge = 'y'
+            f.print_set(myWin, moji, moji, information, information2, 0)
+            ans = 'y'
             event.clearEvents()
         else:
             moji = random.sample(chr_set2, 2)
-            f.print_set(myWin, moji[0], moji[1], information, information2)
-            judge = 'u'
+            f.print_set(myWin, moji[0], moji[1], information, information2, 0)
+            ans = 'u'
             event.clearEvents()
             
 
@@ -195,7 +196,8 @@ if flag == 2:
             pressedList = event.getKeys()
             if len(pressedList) > 0:
                 t2 = myClock.getTime()  # 反応時刻
-                if pressedList[0] == judge: # 正解なら1
+                Judge[t-1] = 1 if pressedList[0] == 'y' else 0 # あなたの解答
+                if pressedList[0] == ans: # 正答率
                     Precision[t-1] = 1
                 else:
                     Precision[t-1] = 0
@@ -207,7 +209,7 @@ if flag == 2:
 
         RTs[t-1] = t2 - t1  # 反応時間
         Intvls[t-1] = g_latencies[pos_g_latencies] # インターバル
-        Answer[t-1] = 1 if judge=='y' else 0
+        Answer[t-1] = 1 if ans=='y' else 0 # 正解
 
         t += 1
         pos_g_latencies += 1
@@ -219,7 +221,7 @@ if flag == 2:
 
     # 反応時間の保存
     myWin.close()
-    f.save(RTs, Intvls, Precision, Answer)
+    f.save(RTs, Intvls, Judge ,Answer, Precision)
     core.quit()
 
 # 課題3
@@ -251,18 +253,18 @@ if flag == 3:
         if random.random() < 0.5: # 0.5未満なら正解のセットを表示
             num = random.randint(0, 25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num], chr_set3[num], information, information2)
+                f.print_set(myWin, chr_set2[num], chr_set3[num], information, information2, 1)
             else:
-                f.print_set(myWin, chr_set3[num], chr_set2[num], information, information2)
-            judge = 'y'
+                f.print_set(myWin, chr_set3[num], chr_set2[num], information, information2, 2)
+            ans = 'y'
             event.clearEvents()
         else:
             num1, num2 = f.random_double(0,25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2)
+                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2, 1)
             else:
-                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2)
-            judge = 'u'
+                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2, 2)
+            ans = 'u'
             event.clearEvents()
             
 
@@ -273,7 +275,8 @@ if flag == 3:
             pressedList = event.getKeys()
             if len(pressedList) > 0:
                 t2 = myClock.getTime()  # 反応時刻
-                if pressedList[0] == judge: # 正解なら1
+                Judge[t-1] = 1 if pressedList[0] == 'y' else 0 # あなたの解答
+                if pressedList[0] == ans: # 正解なら1
                     Precision[t-1] = 1
                 else:
                     Precision[t-1] = 0
@@ -285,7 +288,7 @@ if flag == 3:
 
         RTs[t-1] = t2 - t1  # 反応時間
         Intvls[t-1] = g_latencies[pos_g_latencies]
-        Answer[t-1] = 1 if judge=='y' else 0
+        Answer[t-1] = 1 if ans=='y' else 0
 
         t += 1
         pos_g_latencies += 1
@@ -297,7 +300,7 @@ if flag == 3:
 
     # 反応時間の保存
     myWin.close()
-    f.save(RTs, Intvls, Precision, Answer)
+    f.save(RTs, Intvls, Judge, Answer, Precision)
     core.quit()
 
 # 課題4
@@ -329,18 +332,18 @@ if flag == 4:
         if random.random() < 0.5: # 0.5未満なら正解のセット（同じカテゴリの2つ）
             num1, num2 = f.random_double(0,25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set2[num2], information, information2)
+                f.print_set(myWin, chr_set2[num1], chr_set2[num2], information, information2, 0)
             else:
-                f.print_set(myWin, chr_set3[num1], chr_set3[num2], information, information2)
-            judge = 'y'
+                f.print_set(myWin, chr_set3[num1], chr_set3[num2], information, information2, 0)
+            ans = 'y'
             event.clearEvents()
         else:
             num1, num2 = f.random_double(0,25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2)
+                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2, 1)
             else:
-                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2)
-            judge = 'u'
+                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2, 2)
+            ans = 'u'
             event.clearEvents()
             
 
@@ -351,7 +354,8 @@ if flag == 4:
             pressedList = event.getKeys()
             if len(pressedList) > 0:
                 t2 = myClock.getTime()  # 反応時刻
-                if pressedList[0] == judge: # 正解なら1
+                Judge[t-1] = 1 if pressedList[0] == 'y' else 0 # あなたの解答
+                if pressedList[0] == ans: # 正解なら1
                     Precision[t-1] = 1
                 else:
                     Precision[t-1] = 0
@@ -363,7 +367,7 @@ if flag == 4:
 
         RTs[t-1] = t2 - t1  # 反応時間
         Intvls[t-1] = g_latencies[pos_g_latencies]
-        Answer[t-1] = 1 if judge=='y' else 0
+        Answer[t-1] = 1 if ans=='y' else 0
 
         t += 1
         pos_g_latencies += 1
@@ -375,5 +379,5 @@ if flag == 4:
 
     # 反応時間の保存
     myWin.close()
-    f.save(RTs, Intvls, Precision, Answer)
+    f.save(RTs, Intvls, Judge, Answer, Precision)
     core.quit()

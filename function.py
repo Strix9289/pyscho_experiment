@@ -1,8 +1,13 @@
 import pandas as pd
 import random
 import numpy as np
-from psychopy import core, event, gui
+from psychopy import core, event, gui, visual
 #import psychopy.sound.backend_ptb as pss
+
+komoji = ["a","c","e","g","m","n","o","r","s","u","v","w","x","z"] # 小文字
+cap_moji =  ["d","f","h","k","l"] #大文字と同じ大きさ
+desc_moji = ["g","p","q","y"] # 下に長い文字
+spe_moji = ["i", "t"]
 
 
 def random_double(a, b):
@@ -24,20 +29,48 @@ def print_one(win, text, message):
     message.draw()
     win.flip()
 
-def print_set(win, text1, text2, information, information2, f):
+def print_set(win, text1, text2, information, information2):
     information.setText(text1)
     information2.setText(text2)
-    information.setPos([-0.35, 0])
-    information2.setPos([0.35, 0])
-    if f == 0:  # 両方が同じ文字の大きさの時
+    # 文字の大きさ
+    if text1 in komoji:
+        information.setPos([-0.35, 0.08])
+        information.setHeight(0.65)
+    elif text1 in cap_moji:
+        information.setPos([-0.35, 0])
         information.setHeight(0.5)
+    elif text1 in desc_moji:
+        information.setPos([-0.35, 0.10])
+        information.setHeight(0.60)
+    elif text1 in spe_moji:
+        information.setPos([-0.35, 0.008])
+        information.setHeight(0.57)
+    elif text1 == 'j':
+        information.setPos([-0.35, 0.06])
+        information.setHeight(0.49)
+    else:
+        information.setPos([-0.35, 0])
+        information.setHeight(0.50)
+    # 文字の大きさ
+    if text2 in komoji:
+        information2.setPos([0.35, 0.08])
+        information2.setHeight(0.65)
+    elif text2 in cap_moji:
+        information2.setPos([0.35, 0])
         information2.setHeight(0.5)
-    elif f == 1: # 左の文字が大文字の時
-        information.setHeight(0.5)
-        information2.setHeight(0.6)
-    else:       # 右の文字が大文字の時
-        information.setHeight(0.6)
+    elif text2 in desc_moji:
+        information2.setPos([0.35, 0.10])
+        information2.setHeight(0.60)
+    elif text2 in spe_moji:
+        information2.setPos([0.35, 0.008])
+        information2.setHeight(0.57)
+    elif text2 == 'j':
+        information2.setPos([0.35, 0.06])
+        information2.setHeight(0.49)
+    else: # 大文字
+        information2.setPos([0.35, 0])
         information2.setHeight(0.5)
+
     information.draw()
     information2.draw()
     win.flip()
@@ -63,22 +96,27 @@ def start(myWin, information, t, n_trials):
     #mySound.play()
     print_text(myWin, f'{t}/{n_trials}', information) 
     core.wait(1)
-    msg = 'zを押すとスタート'
+    msg = 'zを押すとスタート\r\neを押すとストップ'
     print_text(myWin, msg, information) 
 
     while True:
-        pressedList = event.getKeys(keyList=['z'])
+        pressedList = event.getKeys(keyList=['z','e'])
         if len(pressedList) > 0:
+            if pressedList[0] == 'e': # 中断
+                myWin.close()
+                core.quit()
             if pressedList[0] == 'z':  # 試行開始
                 event.clearEvents()
                 break
 
 if __name__ == '__main__':
-    # myWin = visual.Window(color='black')
-    # information = visual.TextStim(myWin, text='', color='white') # 文字の書式
-    # information2 = visual.TextStim(myWin, text='',height=0.8, color='white') # 文字の書式
-    # print_set(myWin, 'A', 'B', information, information2)
-    # core.wait(2)
-    # myWin.close()
-    # core.quit()
-    print(random_double(0,25))
+    myWin = visual.Window(color='black')
+    information = visual.TextStim(myWin, text='', font='MS PGothic', color='white') # 文字の書式
+    information2 = visual.TextStim(myWin, text='', font='MS PGothic', color='white') # 文字の書式
+    print_set(myWin, 'I', 'i', information, information2)
+    while True:
+        pressedList = event.getKeys(keyList=['e'])
+        if len(pressedList) > 0:
+            if pressedList[0] == 'e': # 中断
+                myWin.close()
+                core.quit()

@@ -26,8 +26,8 @@ Answer = numpy.zeros(n_trials) # 正しい答え
 Judge = numpy.zeros(n_trials) # あなたの解答(1:正解, 0:不正解)
 Precision = numpy.zeros(n_trials) # 正解か否か
 message = visual.TextStim(myWin, text='', color='white') # 文字の書式
-information = visual.TextStim(myWin, text='', color='white') # 文字の書式
-information2 = visual.TextStim(myWin, text='', color='white') # 文字の書式
+information = visual.TextStim(myWin, text='', font='MS PGothic', color='white') # 文字の書式
+information2 = visual.TextStim(myWin, text='', font='MS PGothic', color='white') # 文字の書式
 
 # ディレイの調整
 latencies = []
@@ -179,12 +179,12 @@ if flag == 2:
         
         if random.random() < 0.5: # 0.5未満なら正解のセットを表示
             moji = random.choice(chr_set2)
-            f.print_set(myWin, moji, moji, information, information2, 0)
+            f.print_set(myWin, moji, moji, information, information2)
             ans = 'y'
             event.clearEvents()
         else:
             moji = random.sample(chr_set2, 2)
-            f.print_set(myWin, moji[0], moji[1], information, information2, 0)
+            f.print_set(myWin, moji[0], moji[1], information, information2)
             ans = 'u'
             event.clearEvents()
             
@@ -253,17 +253,17 @@ if flag == 3:
         if random.random() < 0.5: # 0.5未満なら正解のセットを表示
             num = random.randint(0, 25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num], chr_set3[num], information, information2, 1)
+                f.print_set(myWin, chr_set2[num], chr_set3[num], information, information2)
             else:
-                f.print_set(myWin, chr_set3[num], chr_set2[num], information, information2, 2)
+                f.print_set(myWin, chr_set3[num], chr_set2[num], information, information2)
             ans = 'y'
             event.clearEvents()
         else:
             num1, num2 = f.random_double(0,25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2, 1)
+                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2)
             else:
-                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2, 2)
+                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2)
             ans = 'u'
             event.clearEvents()
             
@@ -332,17 +332,17 @@ if flag == 4:
         if random.random() < 0.5: # 0.5未満なら正解のセット（同じカテゴリの2つ）
             num1, num2 = f.random_double(0,25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set2[num2], information, information2, 0)
+                f.print_set(myWin, chr_set2[num1], chr_set2[num2], information, information2)
             else:
-                f.print_set(myWin, chr_set3[num1], chr_set3[num2], information, information2, 0)
+                f.print_set(myWin, chr_set3[num1], chr_set3[num2], information, information2)
             ans = 'y'
             event.clearEvents()
         else:
             num1, num2 = f.random_double(0,25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2, 1)
+                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2)
             else:
-                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2, 2)
+                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2)
             ans = 'u'
             event.clearEvents()
             

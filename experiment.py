@@ -9,13 +9,12 @@ from psychopy import core, event, visual
 import function as f
 
 # 課題用の文字セット
-chr_set1 = ['a', ''] # 課題１
-chr_set2 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] # 課題2
-chr_set3 = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"] # 課題3
-chr_set4 = ["!","#","$","%","&","=","/","~", "@","?"] # 課題4
+
+chr_set1 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] # 課題2
+chr_set2 = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"] # 課題3
 
 
-myWin = visual.Window(color='black')
+myWin = visual.Window(color='black', size=(800,600))
 myClock = core.Clock() # 時計の用意
 
 # 試行回数
@@ -178,12 +177,12 @@ if flag == 2:
             continue
         
         if random.random() < 0.5: # 0.5未満なら正解のセットを表示
-            moji = random.choice(chr_set2)
+            moji = random.choice(chr_set1)
             f.print_set(myWin, moji, moji, information, information2)
             ans = 'y'
             event.clearEvents()
         else:
-            moji = random.sample(chr_set2, 2)
+            moji = random.sample(chr_set1, 2)
             f.print_set(myWin, moji[0], moji[1], information, information2)
             ans = 'u'
             event.clearEvents()
@@ -253,17 +252,17 @@ if flag == 3:
         if random.random() < 0.5: # 0.5未満なら正解のセットを表示
             num = random.randint(0, 25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num], chr_set3[num], information, information2)
+                f.print_set(myWin, chr_set1[num], chr_set2[num], information, information2)
             else:
-                f.print_set(myWin, chr_set3[num], chr_set2[num], information, information2)
+                f.print_set(myWin, chr_set2[num], chr_set1[num], information, information2)
             ans = 'y'
             event.clearEvents()
         else:
             num1, num2 = f.random_double(0,25)
             if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2)
+                f.print_set(myWin, chr_set1[num1], chr_set2[num2], information, information2)
             else:
-                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2)
+                f.print_set(myWin, chr_set2[num1], chr_set1[num2], information, information2)
             ans = 'u'
             event.clearEvents()
             
@@ -329,20 +328,20 @@ if flag == 4:
         if flying == True:
             continue
         
-        if random.random() < 0.5: # 0.5未満なら正解のセット（同じカテゴリの2つ）
+        if random.random() < 0.5: # 0.5未満なら同じカテゴリの2つを表示
             num1, num2 = f.random_double(0,25)
-            if random.random() < 0.5:
+            if random.random() < 0.5: # 大文字の組み合わせ
+                f.print_set(myWin, chr_set1[num1], chr_set1[num2], information, information2)
+            else: # 小文字の組み合わせ
                 f.print_set(myWin, chr_set2[num1], chr_set2[num2], information, information2)
-            else:
-                f.print_set(myWin, chr_set3[num1], chr_set3[num2], information, information2)
             ans = 'y'
             event.clearEvents()
-        else:
+        else: # 大文字と小文字の組み合わせ
             num1, num2 = f.random_double(0,25)
-            if random.random() < 0.5:
-                f.print_set(myWin, chr_set2[num1], chr_set3[num2], information, information2)
-            else:
-                f.print_set(myWin, chr_set3[num1], chr_set2[num2], information, information2)
+            if random.random() < 0.5: # 右：大文字　左：小文字
+                f.print_set(myWin, chr_set1[num1], chr_set2[num2], information, information2)
+            else: # 右：小文字　左：大文字
+                f.print_set(myWin, chr_set2[num1], chr_set1[num2], information, information2)
             ans = 'u'
             event.clearEvents()
             

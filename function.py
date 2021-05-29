@@ -4,10 +4,10 @@ import numpy as np
 from psychopy import core, event, gui, visual
 #import psychopy.sound.backend_ptb as pss
 
-komoji = ["a","c","e","g","m","n","o","r","s","u","v","w","x","z"] # 小文字
+komoji = ["a","c","e","m","n","o","r","s","u","v","w","x","z"] # 小文字
 cap_moji =  ["d","f","h","k","l"] #大文字と同じ大きさ
 desc_moji = ["g","p","q","y"] # 下に長い文字
-spe_moji = ["i", "t"]
+
 
 
 def random_double(a, b):
@@ -35,15 +35,18 @@ def print_set(win, text1, text2, information, information2):
     # 文字の大きさ
     if text1 in komoji:
         information.setPos([-0.35, 0.08])
-        information.setHeight(0.65)
+        information.setHeight(0.7)
     elif text1 in cap_moji:
         information.setPos([-0.35, 0])
         information.setHeight(0.5)
     elif text1 in desc_moji:
         information.setPos([-0.35, 0.10])
         information.setHeight(0.60)
-    elif text1 in spe_moji:
-        information.setPos([-0.35, 0.008])
+    elif text1 == 'i':
+        information.setPos([-0.35, 0.035])
+        information.setHeight(0.57)
+    elif text1 == 't':
+        information.setPos([0.35, 0.035])
         information.setHeight(0.57)
     elif text1 == 'j':
         information.setPos([-0.35, 0.06])
@@ -54,18 +57,21 @@ def print_set(win, text1, text2, information, information2):
     # 文字の大きさ
     if text2 in komoji:
         information2.setPos([0.35, 0.08])
-        information2.setHeight(0.65)
+        information2.setHeight(0.7)
     elif text2 in cap_moji:
         information2.setPos([0.35, 0])
         information2.setHeight(0.5)
     elif text2 in desc_moji:
         information2.setPos([0.35, 0.10])
         information2.setHeight(0.60)
-    elif text2 in spe_moji:
-        information2.setPos([0.35, 0.008])
+    elif text2 == 'i':
+        information2.setPos([0.35, 0.005])
+        information2.setHeight(0.57)
+    elif text2 == 't':
+        information2.setPos([0.35, 0.035])
         information2.setHeight(0.57)
     elif text2 == 'j':
-        information2.setPos([0.35, 0.06])
+        information2.setPos([0.35, 0.05])
         information2.setHeight(0.49)
     else: # 大文字
         information2.setPos([0.35, 0])
@@ -113,7 +119,8 @@ if __name__ == '__main__':
     myWin = visual.Window(color='black')
     information = visual.TextStim(myWin, text='', font='MS PGothic', color='white') # 文字の書式
     information2 = visual.TextStim(myWin, text='', font='MS PGothic', color='white') # 文字の書式
-    print_set(myWin, 'I', 'i', information, information2)
+    print_set(myWin, 'a', 'b', information, information2)
+    #print_text(myWin, '課題1', information)
     while True:
         pressedList = event.getKeys(keyList=['e'])
         if len(pressedList) > 0:
